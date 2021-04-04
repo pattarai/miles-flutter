@@ -39,7 +39,10 @@ class SignInState extends State<SignIn> {
                       labelStyle: labelStyle,
                     ),
                     validator: (value) {
-                      if (value == null || value.isEmpty) {
+                      // Negation is true
+                      if (!RegExp(
+                              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                          .hasMatch(value.toString())) {
                         return 'Please enter a valid address';
                       }
                       return null;
