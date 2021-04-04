@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
 import '../styles.dart';
+
+import 'package:http/http.dart' as http;
 
 class SignIn extends StatefulWidget {
   @override
@@ -83,6 +87,7 @@ class SignInState extends State<SignIn> {
                               setState(() {
                                 isPressed = true;
                               });
+
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(SnackBar(
                                       content: Row(
@@ -98,6 +103,44 @@ class SignInState extends State<SignIn> {
                                   Text("Retrieving info..."),
                                 ],
                               )));
+                              // Perform API call here
+
+                              http.post(Uri.http('localhost:5000', 'login'),
+                                  headers: {"Content-Type": "application/json"},
+                                  body: jsonEncode({
+                                    "email": "ponrahul.21it@licet.ac.in",
+                                    "password": "licet@123"
+                                  })).then((response) {
+                                print(response.statusCode.toString());
+                                if (response.statusCode == 200) {
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(SnackBar(
+                                          content: Row(
+                                    children: [
+                                      Text("Signed in"),
+                                    ],
+                                  )));
+                                  // return User.fromJson(jsonDecode(response.body));
+                                } else if (response.statusCode == 403) {
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(SnackBar(
+                                          content: Row(
+                                    children: [
+                                      Text("Invalid credentials"),
+                                    ],
+                                  )));
+                                } else {
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(SnackBar(
+                                          content: Row(
+                                    children: [
+                                      Text(
+                                          "Server is not responding at the moment"),
+                                    ],
+                                  )));
+                                }
+                              });
+
                               setState(() {
                                 isPressed = false;
                               });
