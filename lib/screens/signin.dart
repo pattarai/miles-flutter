@@ -105,13 +105,22 @@ class SignInState extends State<SignIn> {
                               )));
                               // Perform API call here
 
-                              http.post(Uri.http('localhost:5000', 'login'),
-                                  headers: {"Content-Type": "application/json"},
-                                  body: jsonEncode({
-                                    "email": "ponrahul.21it@licet.ac.in",
-                                    "password": "licet@123"
-                                  })).then((response) {
-                                print(response.statusCode.toString());
+                              Map<String, String> requestMap = {
+                                "email": "ponrahul.21it@licet.ac.in",
+                                "password": "licet@123"
+                              };
+
+                              http
+                                  .post(Uri.http('localhost:5000', 'login'),
+                                      headers: {
+                                        "Accept": "application/json",
+                                        "Content-Type":
+                                            "application/x-www-form-urlencoded"
+                                      },
+                                      body: requestMap,
+                                      encoding: Encoding.getByName("utf-8"))
+                                  .then((response) {
+                                print(response.body);
                                 if (response.statusCode == 200) {
                                   ScaffoldMessenger.of(context)
                                       .showSnackBar(SnackBar(
