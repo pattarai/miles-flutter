@@ -26,3 +26,10 @@ TextStyle buttonStyle = new TextStyle(
   fontFamily: "Dosis",
   fontWeight: FontWeight.w500,
 );
+
+TextStyle snackBarStyle = new TextStyle(
+  fontFamily: "Dosis",
+  fontWeight: FontWeight.w400,
+  fontSize: 16
+);
+

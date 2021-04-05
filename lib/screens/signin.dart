@@ -103,7 +103,10 @@ class SignInState extends State<SignIn> {
                                           child: CircularProgressIndicator(
                                             strokeWidth: 3,
                                           ))),
-                                  Text("Retrieving info..."),
+                                  Text(
+                                    "Retrieving info...",
+                                    style: snackBarStyle,
+                                  ),
                                 ],
                               )));
 
@@ -122,7 +125,10 @@ class SignInState extends State<SignIn> {
                                     .showSnackBar(SnackBar(
                                         content: Row(
                                   children: [
-                                    Text("Server unreachable"),
+                                    Text(
+                                      "Server unreachable",
+                                      style: snackBarStyle,
+                                    ),
                                   ],
                                 )));
                               }).then((response) {
@@ -132,7 +138,10 @@ class SignInState extends State<SignIn> {
                                       .showSnackBar(SnackBar(
                                           content: Row(
                                     children: [
-                                      Text("Signed in"),
+                                      Text(
+                                        "Signed in",
+                                        style: snackBarStyle,
+                                      ),
                                     ],
                                   )));
 
@@ -150,7 +159,10 @@ class SignInState extends State<SignIn> {
                                       .showSnackBar(SnackBar(
                                           content: Row(
                                     children: [
-                                      Text("Invalid credentials"),
+                                      Text(
+                                        "Invalid credentials",
+                                        style: snackBarStyle,
+                                      ),
                                     ],
                                   )));
                                 } else {
@@ -162,7 +174,9 @@ class SignInState extends State<SignIn> {
                                           content: Row(
                                     children: [
                                       Text(
-                                          "Server is not responding at the moment"),
+                                        "Server is not responding at the moment",
+                                        style: snackBarStyle,
+                                      ),
                                     ],
                                   )));
                                 }
