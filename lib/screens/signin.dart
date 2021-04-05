@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:miles/global.dart';
 import 'package:miles/helper/apiHelper.dart';
+import 'package:miles/screens/home/home.dart';
 
 import '../helper/styles.dart';
 
@@ -113,7 +114,18 @@ class SignInState extends State<SignIn> {
 
                               apiRequest(
                                       PROTOCOL, AUTHORITY, 'login', requestMap)
-                                  .then((response) {
+                                  .catchError((error) {
+                                setState(() {
+                                  isPressed = false;
+                                });
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(SnackBar(
+                                        content: Row(
+                                  children: [
+                                    Text("Server unreachable"),
+                                  ],
+                                )));
+                              }).then((response) {
                                 print(response.body);
                                 if (response.statusCode == 200) {
                                   ScaffoldMessenger.of(context)
@@ -123,7 +135,13 @@ class SignInState extends State<SignIn> {
                                       Text("Signed in"),
                                     ],
                                   )));
-                                  // return User.fromJson(jsonDecode(response.body));
+
+                                  // TODO: Store user info to shared pref
+
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => HomeScreen()));
                                 } else if (response.statusCode == 403) {
                                   setState(() {
                                     isPressed = false;
