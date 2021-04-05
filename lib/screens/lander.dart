@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:miles/screens/signin.dart';
 
-import '../styles.dart';
+import '../helper/styles.dart';
 
 class Lander extends StatelessWidget {
   @override

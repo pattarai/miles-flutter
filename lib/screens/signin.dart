@@ -1,10 +1,8 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
+import 'package:miles/global.dart';
+import 'package:miles/helper/apiHelper.dart';
 
-import '../styles.dart';
-
-import 'package:http/http.dart' as http;
+import '../helper/styles.dart';
 
 class SignIn extends StatefulWidget {
   @override
@@ -15,6 +13,8 @@ class SignIn extends StatefulWidget {
 
 class SignInState extends State<SignIn> {
   final _formKey = GlobalKey<FormState>();
+  TextEditingController userController = new TextEditingController();
+  TextEditingController passController = new TextEditingController();
   bool isPressed = false;
 
   @override
@@ -36,6 +36,7 @@ class SignInState extends State<SignIn> {
                   padding: EdgeInsets.only(top: 8, bottom: 8),
                   child: TextFormField(
                     style: textFieldStyle,
+                    controller: userController,
                     decoration: InputDecoration(
                       hintText: "Enter your work email address",
                       hintStyle: hintStyle,
@@ -57,6 +58,7 @@ class SignInState extends State<SignIn> {
                   padding: EdgeInsets.only(top: 8, bottom: 8),
                   child: TextFormField(
                     obscureText: true,
+                    controller: passController,
                     style: textFieldStyle,
                     decoration: InputDecoration(
                       hintText: "",
@@ -103,22 +105,14 @@ class SignInState extends State<SignIn> {
                                   Text("Retrieving info..."),
                                 ],
                               )));
-                              // Perform API call here
 
                               Map<String, String> requestMap = {
-                                "email": "ponrahul.21it@licet.ac.in",
-                                "password": "licet@123"
+                                "email": userController.text,
+                                "password": passController.text,
                               };
 
-                              http
-                                  .post(Uri.http('localhost:5000', 'login'),
-                                      headers: {
-                                        "Accept": "application/json",
-                                        "Content-Type":
-                                            "application/x-www-form-urlencoded"
-                                      },
-                                      body: requestMap,
-                                      encoding: Encoding.getByName("utf-8"))
+                              apiRequest(
+                                      PROTOCOL, AUTHORITY, 'login', requestMap)
                                   .then((response) {
                                 print(response.body);
                                 if (response.statusCode == 200) {
@@ -131,6 +125,9 @@ class SignInState extends State<SignIn> {
                                   )));
                                   // return User.fromJson(jsonDecode(response.body));
                                 } else if (response.statusCode == 403) {
+                                  setState(() {
+                                    isPressed = false;
+                                  });
                                   ScaffoldMessenger.of(context)
                                       .showSnackBar(SnackBar(
                                           content: Row(
@@ -139,6 +136,9 @@ class SignInState extends State<SignIn> {
                                     ],
                                   )));
                                 } else {
+                                  setState(() {
+                                    isPressed = false;
+                                  });
                                   ScaffoldMessenger.of(context)
                                       .showSnackBar(SnackBar(
                                           content: Row(
@@ -148,10 +148,6 @@ class SignInState extends State<SignIn> {
                                     ],
                                   )));
                                 }
-                              });
-
-                              setState(() {
-                                isPressed = false;
                               });
                             }
                           },
