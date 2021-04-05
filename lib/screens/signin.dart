@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:miles/global.dart';
 import 'package:miles/helper/apiHelper.dart';
+import 'package:miles/helper/sharedPreferences.dart';
 import 'package:miles/screens/home/home.dart';
 
 import '../helper/styles.dart';
@@ -132,7 +135,6 @@ class SignInState extends State<SignIn> {
                                   ],
                                 )));
                               }).then((response) {
-                                print(response.body);
                                 if (response.statusCode == 200) {
                                   ScaffoldMessenger.of(context)
                                       .showSnackBar(SnackBar(
@@ -145,7 +147,10 @@ class SignInState extends State<SignIn> {
                                     ],
                                   )));
 
-                                  // TODO: Store user info to shared pref
+                                  // Store user info to shared pref
+                                  Map userInfo = jsonDecode(response.body);
+
+                                  userInfo.forEach((key, value) => insertToSharedPref(key, value));
 
                                   Navigator.pushReplacement(
                                       context,

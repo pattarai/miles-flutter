@@ -1,6 +1,10 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:miles/global.dart';
+import 'package:miles/helper/apiHelper.dart';
+import 'package:miles/helper/sharedPreferences.dart';
+import 'package:miles/screens/home/home.dart';
 import 'package:miles/screens/signin.dart';
 
 import '../helper/styles.dart';
@@ -43,10 +47,104 @@ class Lander extends StatelessWidget {
                 ),
                 ElevatedButton(
                     child: Text(
-                      "Sign up",
+                      "Express Sign in",
                       style: buttonStyle,
                     ),
-                    onPressed: null)
+                    onPressed: () {
+                      try {
+                        String email = "";
+                        String token = "";
+                        getFromSharedPref("email").then((value) {
+                          email = value;
+                          getFromSharedPref("token").then((value) {
+                            token = value;
+
+                            Map<String, String> authMap = {
+                              "email": email,
+                              "token": token,
+                            };
+                            apiRequest(
+                                    PROTOCOL, AUTHORITY, "auth-status", authMap)
+                                .catchError((error) {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(SnackBar(
+                                      content: Row(
+                                children: [
+                                  Text(
+                                    "Server unreachable",
+                                    style: snackBarStyle,
+                                  ),
+                                ],
+                              )));
+                            }).then((response) {
+                              print(response.statusCode);
+                              if (response.statusCode == 200) {
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(SnackBar(
+                                        content: Row(
+                                  children: [
+                                    Text(
+                                      "Express signed in",
+                                      style: snackBarStyle,
+                                    ),
+                                  ],
+                                )));
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => HomeScreen()));
+                              } else if (response.statusCode == 403) {
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(SnackBar(
+                                        content: Row(
+                                  children: [
+                                    Text(
+                                      "Invalid token",
+                                      style: snackBarStyle,
+                                    ),
+                                  ],
+                                )));
+                              } else {
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(SnackBar(
+                                        content: Row(
+                                  children: [
+                                    Text(
+                                      "Server is not responding at the moment",
+                                      style: snackBarStyle,
+                                    ),
+                                  ],
+                                )));
+                              }
+                            });
+                          });
+                        });
+                      } on Exception {
+                        clearSharedPref().then((status) {
+                          if (status) {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                content: Row(
+                              children: [
+                                Text(
+                                  "SharedPreferences cleared",
+                                  style: snackBarStyle,
+                                ),
+                              ],
+                            )));
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                content: Row(
+                              children: [
+                                Text(
+                                  "Failed to clear SharedPreferences",
+                                  style: snackBarStyle,
+                                ),
+                              ],
+                            )));
+                          }
+                        });
+                      }
+                    })
               ],
             ),
           ),
