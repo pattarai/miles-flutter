@@ -15,7 +15,7 @@ Future<bool> insertToSharedPref(String key, dynamic value) async {
       throw Exception("invalid-type");
     }
     return true;
-  } on Exception {
+  } catch(e) {
     return false;
   }
 }
@@ -25,7 +25,7 @@ Future<bool> removeFromSharedPref(String key) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.remove(key);
     return true;
-  } on Exception {
+  } catch(e) {
     return false;
   }
 }
@@ -34,7 +34,7 @@ Future<dynamic> getFromSharedPref(String key) async {
   try {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.get(key);
-  } on Exception {
+  } catch(e) {
     return Exception("shared-pref-read-error");
   }
 }
@@ -44,7 +44,7 @@ Future<bool> clearSharedPref() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.clear();
     return true;
-  } on Exception {
+  } catch(e) {
     return false;
   }
 }

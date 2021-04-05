@@ -9,7 +9,16 @@ import 'package:miles/screens/signin.dart';
 
 import '../helper/styles.dart';
 
-class Lander extends StatelessWidget {
+class Lander extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return LanderState();
+  }
+}
+
+class LanderState extends State<Lander> {
+  bool isPressed = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,118 +47,127 @@ class Lander extends StatelessWidget {
                         "Sign in with your Work Account",
                         style: buttonStyle,
                       ),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => SignIn()),
-                        );
-                      }),
+                      onPressed: isPressed
+                          ? null
+                          : () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SignIn()),
+                              );
+                            }),
                 ),
                 ElevatedButton(
                     child: Text(
                       "Express Sign in",
                       style: buttonStyle,
                     ),
-                    onPressed: () {
-                      try {
-                        String email = "";
-                        String token = "";
-                        getFromSharedPref("email").then((value) {
-                          email = value;
-                          getFromSharedPref("token").then((value) {
-                            token = value;
-
-                            Map<String, String> authMap = {
-                              "email": email,
-                              "token": token,
-                            };
-                            apiRequest(
-                                    PROTOCOL, AUTHORITY, "auth-status", authMap)
-                                .catchError((error) {
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(SnackBar(
-                                      content: Row(
-                                children: [
-                                  Text(
-                                    "Server unreachable",
-                                    style: snackBarStyle,
-                                  ),
-                                ],
-                              )));
-                            }).then((response) {
-                              print(response.statusCode);
-                              if (response.statusCode == 200) {
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(SnackBar(
-                                        content: Row(
-                                  children: [
-                                    Text(
-                                      "Express signed in",
-                                      style: snackBarStyle,
-                                    ),
-                                  ],
-                                )));
-                                Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => HomeScreen()));
-                              } else if (response.statusCode == 403) {
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(SnackBar(
-                                        content: Row(
-                                  children: [
-                                    Text(
-                                      "Invalid token",
-                                      style: snackBarStyle,
-                                    ),
-                                  ],
-                                )));
-                              } else {
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(SnackBar(
-                                        content: Row(
-                                  children: [
-                                    Text(
-                                      "Server is not responding at the moment",
-                                      style: snackBarStyle,
-                                    ),
-                                  ],
-                                )));
-                              }
+                    onPressed: isPressed
+                        ? null
+                        : () {
+                            setState(() {
+                              isPressed = true;
                             });
-                          });
-                        });
-                      } on Exception {
-                        clearSharedPref().then((status) {
-                          if (status) {
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                content: Row(
-                              children: [
-                                Text(
-                                  "SharedPreferences cleared",
-                                  style: snackBarStyle,
-                                ),
-                              ],
-                            )));
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                content: Row(
-                              children: [
-                                Text(
-                                  "Failed to clear SharedPreferences",
-                                  style: snackBarStyle,
-                                ),
-                              ],
-                            )));
-                          }
-                        });
-                      }
-                    })
+
+
+
+                            try {
+                              dynamic email = "";
+                              dynamic token = "";
+                              getFromSharedPref("email").then((value) {
+                                if (value.runtimeType != String) {
+                                  showSnackBar("No user credentials found");
+                                  clearSharedPreferences();
+                                  return;
+                                }
+                                email = value;
+                                getFromSharedPref("token").then((value) {
+                                  if (value.runtimeType != String) {
+                                    showSnackBar("No access token found");
+                                    clearSharedPreferences();
+                                    return;
+                                  }
+                                  token = value;
+
+                                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                      content: Row(
+                                        children: [
+                                          Container(
+                                              padding: EdgeInsets.only(right: 16),
+                                              child: SizedBox(
+                                                  height: 20,
+                                                  width: 20,
+                                                  child: CircularProgressIndicator(
+                                                    strokeWidth: 3,
+                                                  ))),
+                                          Text(
+                                            "Retrieving info...",
+                                            style: snackBarStyle,
+                                          ),
+                                        ],
+                                      )));
+
+                                  Map<String, String> authMap = {
+                                    "email": email,
+                                    "token": token,
+                                  };
+                                  apiRequest(PROTOCOL, AUTHORITY, "auth-status",
+                                          authMap)
+                                      .catchError((error) {
+                                    showSnackBar("Server unreachable");
+                                  }).then((response) {
+                                    print(response.statusCode);
+                                    if (response.statusCode == 200) {
+                                      showSnackBar("Express sign in");
+                                      Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  HomeScreen()));
+                                    } else if (response.statusCode == 403) {
+                                      showSnackBar("Invalid token");
+                                      clearSharedPreferences();
+                                    } else {
+                                      setState(() {
+                                        isPressed = false;
+                                      });
+                                      showSnackBar("Server is not responding at the moment");
+                                    }
+                                  });
+                                });
+                              });
+                            } catch (e) {
+                              clearSharedPreferences();
+                            }
+                          })
               ],
             ),
           ),
         ),
       ),
     );
+  }
+
+  void clearSharedPreferences() {
+    clearSharedPref().then((status) {
+      if (status) {
+        showSnackBar("SharedPreferences cleared");
+
+      } else {
+        showSnackBar("Failed to clear SharedPreferences");
+      }
+    });
+  }
+
+  void showSnackBar (String desc) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Row(
+          children: [
+            Text(
+              desc,
+              style: snackBarStyle,
+            ),
+          ],
+        )));
   }
 }

@@ -15,7 +15,7 @@ Future<dynamic> apiRequest(protocol, authority, api, body) {
             body: body,
             encoding: Encoding.getByName("utf-8"))
         .catchError((error) => error);
-  } on Exception {
+  } catch(e) {
     return Future.error(Exception("host-unreachable"));
   }
 }
