@@ -136,26 +136,35 @@ class SignInState extends State<SignIn> {
                                 )));
                               }).then((response) {
                                 if (response.statusCode == 200) {
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(SnackBar(
-                                          content: Row(
-                                    children: [
-                                      Text(
-                                        "Signed in",
-                                        style: snackBarStyle,
-                                      ),
-                                    ],
-                                  )));
-
+                                  print(response.body);
                                   // Store user info to shared pref
                                   Map userInfo = jsonDecode(response.body);
 
-                                  userInfo.forEach((key, value) => insertToSharedPref(key, value));
+                                  Future<bool> writeToSharedPref(
+                                      Map userInfo) async {
+                                    userInfo.forEach((key, value) async {
+                                      await insertToSharedPref(key, value);
+                                    });
+                                    return true;
+                                  }
 
-                                  Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => HomeScreen()));
+                                  writeToSharedPref(userInfo).then((val) {
+                                    Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                HomeScreen()));
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(SnackBar(
+                                            content: Row(
+                                      children: [
+                                        Text(
+                                          "Signed in",
+                                          style: snackBarStyle,
+                                        ),
+                                      ],
+                                    )));
+                                  });
                                 } else if (response.statusCode == 403) {
                                   setState(() {
                                     isPressed = false;

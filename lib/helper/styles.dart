@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 TextStyle headerStyle = new TextStyle(
     fontSize: 40, fontFamily: "Dosis", fontWeight: FontWeight.w300);
 
+TextStyle subHeaderStyle = new TextStyle(
+    fontSize: 20, fontFamily: "Dosis", fontWeight: FontWeight.w300);
+
 TextStyle titleStyle = new TextStyle(
     fontFamily: "Dosis", fontWeight: FontWeight.w300, fontSize: 70);
 
