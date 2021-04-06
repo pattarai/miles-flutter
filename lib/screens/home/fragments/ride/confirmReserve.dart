@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:miles/global.dart';
+import 'package:miles/helper/apiHelper.dart';
 import 'package:miles/helper/styles.dart';
 import 'package:latlng/latlng.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -8,20 +10,24 @@ import 'package:url_launcher/url_launcher.dart';
 
 class RideConfirmReserve extends StatefulWidget {
   final Map stationInfo;
+  final Map userInfo;
 
-  RideConfirmReserve({required this.stationInfo});
+  RideConfirmReserve({required this.stationInfo, required this.userInfo});
 
   @override
   State<StatefulWidget> createState() {
-    return RideConfirmReserveState(stationInfo: stationInfo);
+    return RideConfirmReserveState(
+        stationInfo: stationInfo, userInfo: userInfo);
   }
 }
 
 class RideConfirmReserveState extends State<RideConfirmReserve> {
   final Map stationInfo;
+  final Map userInfo;
+
   late final controller;
 
-  RideConfirmReserveState({required this.stationInfo});
+  RideConfirmReserveState({required this.stationInfo, required this.userInfo});
 
   @override
   void initState() {
@@ -145,7 +151,21 @@ class RideConfirmReserveState extends State<RideConfirmReserve> {
                                 stationInfo["longitude"].toString());
                           },
                           child: Text("Open in Maps")),
-                      ElevatedButton(onPressed: null, child: Text("Reserve")),
+                      ElevatedButton(
+                          onPressed: () {
+                            Map<String, String> apiData = {
+                              "email": userInfo["email"],
+                              "token": userInfo["token"],
+                              "stationID": stationInfo["stationID"].toString(),
+                            };
+
+                            apiRequest(PROTOCOL, AUTHORITY, "reserve-bike",
+                                    apiData)
+                                .then((response) {
+                              print(response.body);
+                            });
+                          },
+                          child: Text("Reserve")),
                     ],
                   ),
                 ))

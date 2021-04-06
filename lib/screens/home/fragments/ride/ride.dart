@@ -66,6 +66,7 @@ class RideNowState extends State<RideNow> {
                                 builder: (context) => RideConfirmReserve(
                                       stationInfo:
                                           snapshot.data["availBikeData"][index],
+                                      userInfo: snapshot.data["userData"],
                                     )));
                       },
                       child: Container(
