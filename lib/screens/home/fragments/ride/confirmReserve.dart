@@ -18,15 +18,21 @@ class RideConfirmReserve extends StatefulWidget {
 
 class RideConfirmReserveState extends State<RideConfirmReserve> {
   final Map stationInfo;
+  late final controller;
 
   RideConfirmReserveState({required this.stationInfo});
 
-  final controller = NavMap.MapController(
-    location: LatLng(35.68, 51.41),
-  );
+  @override
+  void initState() {
+    super.initState();
+    controller = NavMap.MapController(
+      location: LatLng(stationInfo["latitude"], stationInfo["longitude"]),
+    );
+  }
+
 
   void _gotoDefault() {
-    controller.center = LatLng(35.68, 51.41);
+    controller.center = LatLng(stationInfo["latitude"], stationInfo["longitude"]);
   }
 
   void _onDoubleTap() {
@@ -66,23 +72,33 @@ class RideConfirmReserveState extends State<RideConfirmReserve> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(
-              "RIDE NOW",
-              style: headerStyle,
-            ),
-            Padding(
-                padding: EdgeInsets.only(top: 6),
-                child: Text(
-                  "Reserve your bike",
-                  style: subHeader2Style,
-                )),
-            Padding(
-                padding: EdgeInsets.only(top: 6),
-                child: Text(
-                  stationInfo["stationName"],
-                  style: subHeader2Style,
-                )),
             Expanded(
+              flex: 20,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(
+                    "RIDE NOW",
+                    style: headerStyle,
+                  ),
+                  Padding(
+                      padding: EdgeInsets.only(top: 6),
+                      child: Text(
+                        "Reserve your bike",
+                        style: subHeader2Style,
+                      )),
+                  Padding(
+                      padding: EdgeInsets.only(top: 6),
+                      child: Text(
+                        stationInfo["stationName"],
+                        style: subHeader2Style,
+                      )),
+                ],
+              ),
+            ),
+            Expanded(
+              flex: 53,
               child: GestureDetector(
                 onDoubleTap: _onDoubleTap,
                 onScaleStart: _onScaleStart,
@@ -106,12 +122,26 @@ class RideConfirmReserveState extends State<RideConfirmReserve> {
                       },
                     ),
                     Center(
-                      child: Icon(Icons.close, color: Colors.red),
+                      child: Icon(Icons.location_pin, color: Colors.red),
                     ),
                   ],
                 ),
               ),
             ),
+            Expanded(
+
+                flex: 7,
+                child: Container(
+                  padding: EdgeInsets.only(top:20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      ElevatedButton(onPressed: null, child: Text("Open in Maps")),
+                      ElevatedButton(onPressed: null, child: Text("Reserve")),
+                    ],
+                  ),
+                ))
           ],
         ),
       ),
