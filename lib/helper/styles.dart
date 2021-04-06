@@ -47,8 +47,5 @@ TextStyle cardSubHeroTextStyleWhite = new TextStyle(
     fontSize: 16
 );
 
-TextStyle defaultTextStyleBlack = new TextStyle(
-  fontFamily: "Dosis",
-  fontWeight: FontWeight.w600,
-  color: Colors.white,
-);
+TextStyle subHeader2Style = new TextStyle(
+    fontSize: 24, fontFamily: "Dosis", fontWeight: FontWeight.w400);
