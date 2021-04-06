@@ -2,14 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:miles/helper/styles.dart';
 
 class RideConfirmReserve extends StatefulWidget {
+  final Map stationInfo;
+
+  RideConfirmReserve({
+    required this.stationInfo
+  });
+
   @override
   State<StatefulWidget> createState() {
-    return RideConfirmReserveState();
+    return RideConfirmReserveState(stationInfo: stationInfo);
   }
 
 }
 
 class RideConfirmReserveState extends State<RideConfirmReserve> {
+  final Map stationInfo;
+
+  RideConfirmReserveState({required this.stationInfo});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,6 +38,12 @@ class RideConfirmReserveState extends State<RideConfirmReserve> {
                   padding: EdgeInsets.only(top: 6),
                   child: Text(
                     "Reserve your bike",
+                    style: subHeader2Style,
+                  )),
+              Padding(
+                  padding: EdgeInsets.only(top: 6),
+                  child: Text(
+                    stationInfo["stationName"],
                     style: subHeader2Style,
                   )),
             ],

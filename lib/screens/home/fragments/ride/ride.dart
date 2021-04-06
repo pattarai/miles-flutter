@@ -59,40 +59,46 @@ class RideNowState extends State<RideNow> {
                     itemCount: snapshot.data["availBikeData"].length,
                     itemBuilder: (BuildContext context, int index) =>
                         new InkWell(
-                          onTap: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => RideConfirmReserve()));
-                          },
-                          child: Container(
-                              padding: EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(7.0),
-                                color: const Color(0xff32b92d),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: const Color(0x29000000),
-                                    offset: Offset(0, 3),
-                                    blurRadius: 6,
-                                  ),
-                                ],
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => RideConfirmReserve(
+                                      stationInfo:
+                                          snapshot.data["availBikeData"][index],
+                                    )));
+                      },
+                      child: Container(
+                          padding: EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(7.0),
+                            color: const Color(0xff32b92d),
+                            boxShadow: [
+                              BoxShadow(
+                                color: const Color(0x29000000),
+                                offset: Offset(0, 3),
+                                blurRadius: 6,
                               ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: [
-                                  Text(
-                                    snapshot.data["availBikeData"][index]
-                                        ["stationName"],
-                                    style: cardHeroTextStyleWhite,
-                                  ),
-                                  Text(
-                                    snapshot.data["availBikeData"][index]
-                                                ["available"]
-                                            .toString() +
-                                        " available",
-                                    style: cardSubHeroTextStyleWhite,
-                                  ),
-                                ],
-                              )),
-                        ),
+                            ],
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Text(
+                                snapshot.data["availBikeData"][index]
+                                    ["stationName"],
+                                style: cardHeroTextStyleWhite,
+                              ),
+                              Text(
+                                snapshot.data["availBikeData"][index]
+                                            ["available"]
+                                        .toString() +
+                                    " available",
+                                style: cardSubHeroTextStyleWhite,
+                              ),
+                            ],
+                          )),
+                    ),
                     staggeredTileBuilder: (int index) =>
                         new StaggeredTile.fit(2),
                     mainAxisSpacing: 4.0,
