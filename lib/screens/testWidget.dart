@@ -1,27 +1,15 @@
-import 'package:flutter/material.dart';
-import 'package:miles/helper/styles.dart';
-import 'package:latlng/latlng.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
+import 'package:latlng/latlng.dart';
+import 'package:map/map.dart';
 
-import 'package:map/map.dart' as NavMap;
-
-class RideConfirmReserve extends StatefulWidget {
-  final Map stationInfo;
-
-  RideConfirmReserve({required this.stationInfo});
-
+class TestWidget extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() {
-    return RideConfirmReserveState(stationInfo: stationInfo);
-  }
+  _TestWidgetState createState() => _TestWidgetState();
 }
 
-class RideConfirmReserveState extends State<RideConfirmReserve> {
-  final Map stationInfo;
-
-  RideConfirmReserveState({required this.stationInfo});
-
-  final controller = NavMap.MapController(
+class _TestWidgetState extends State<TestWidget> {
+  final controller = MapController(
     location: LatLng(35.68, 51.41),
   );
 
@@ -35,7 +23,6 @@ class RideConfirmReserveState extends State<RideConfirmReserve> {
 
   late Offset _dragStart;
   double _scaleStart = 1.0;
-
   void _onScaleStart(ScaleStartDetails details) {
     _dragStart = details.focalPoint;
     _scaleStart = 1.0;
@@ -60,6 +47,9 @@ class RideConfirmReserveState extends State<RideConfirmReserve> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Map Demo'),
+      ),
       body: Container(
         padding: EdgeInsets.all(20),
         child: Column(
@@ -68,20 +58,8 @@ class RideConfirmReserveState extends State<RideConfirmReserve> {
           children: [
             Text(
               "RIDE NOW",
-              style: headerStyle,
             ),
-            Padding(
-                padding: EdgeInsets.only(top: 6),
-                child: Text(
-                  "Reserve your bike",
-                  style: subHeader2Style,
-                )),
-            Padding(
-                padding: EdgeInsets.only(top: 6),
-                child: Text(
-                  stationInfo["stationName"],
-                  style: subHeader2Style,
-                )),
+
             Expanded(
               child: GestureDetector(
                 onDoubleTap: _onDoubleTap,
@@ -93,7 +71,7 @@ class RideConfirmReserveState extends State<RideConfirmReserve> {
                 },
                 child: Stack(
                   children: [
-                    NavMap.Map(
+                    Map(
                       controller: controller,
                       builder: (context, x, y, z) {
                         final url =

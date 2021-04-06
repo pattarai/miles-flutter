@@ -6,6 +6,7 @@ import 'package:miles/helper/apiHelper.dart';
 import 'package:miles/helper/sharedPreferences.dart';
 import 'package:miles/screens/home/home.dart';
 import 'package:miles/screens/signin.dart';
+import 'package:miles/screens/testWidget.dart';
 
 import '../helper/styles.dart';
 
@@ -69,8 +70,6 @@ class LanderState extends State<Lander> {
                               isPressed = true;
                             });
 
-
-
                             try {
                               dynamic email = "";
                               dynamic token = "";
@@ -90,23 +89,24 @@ class LanderState extends State<Lander> {
                                   token = value;
                                   print(token);
 
-                                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                      content: Row(
-                                        children: [
-                                          Container(
-                                              padding: EdgeInsets.only(right: 16),
-                                              child: SizedBox(
-                                                  height: 20,
-                                                  width: 20,
-                                                  child: CircularProgressIndicator(
-                                                    strokeWidth: 3,
-                                                  ))),
-                                          Text(
-                                            "Retrieving info...",
-                                            style: snackBarStyle,
-                                          ),
-                                        ],
-                                      )));
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(SnackBar(
+                                          content: Row(
+                                    children: [
+                                      Container(
+                                          padding: EdgeInsets.only(right: 16),
+                                          child: SizedBox(
+                                              height: 20,
+                                              width: 20,
+                                              child: CircularProgressIndicator(
+                                                strokeWidth: 3,
+                                              ))),
+                                      Text(
+                                        "Retrieving info...",
+                                        style: snackBarStyle,
+                                      ),
+                                    ],
+                                  )));
 
                                   Map<String, String> authMap = {
                                     "email": email,
@@ -132,7 +132,8 @@ class LanderState extends State<Lander> {
                                       setState(() {
                                         isPressed = false;
                                       });
-                                      showSnackBar("Server is not responding at the moment");
+                                      showSnackBar(
+                                          "Server is not responding at the moment");
                                     }
                                   });
                                 });
@@ -140,7 +141,21 @@ class LanderState extends State<Lander> {
                             } catch (e) {
                               clearSharedPreferences();
                             }
-                          })
+                          }),
+                Padding(
+                  padding: const EdgeInsets.only(top: 50, bottom: 12.0),
+                  child: ElevatedButton(
+                      child: Text(
+                        "Test Widget",
+                        style: buttonStyle,
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => TestWidget()),
+                        );
+                      }),
+                ),
               ],
             ),
           ),
@@ -153,22 +168,21 @@ class LanderState extends State<Lander> {
     clearSharedPref().then((status) {
       if (status) {
         showSnackBar("SharedPreferences cleared");
-
       } else {
         showSnackBar("Failed to clear SharedPreferences");
       }
     });
   }
 
-  void showSnackBar (String desc) {
+  void showSnackBar(String desc) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Row(
-          children: [
-            Text(
-              desc,
-              style: snackBarStyle,
-            ),
-          ],
-        )));
+      children: [
+        Text(
+          desc,
+          style: snackBarStyle,
+        ),
+      ],
+    )));
   }
 }
