@@ -13,13 +13,13 @@ class RideNow extends StatefulWidget {
 }
 
 class RideNowState extends State<RideNow> {
-  final Future<dynamic> _organizationName =
+  final Future<dynamic> _userInfo =
       getAllFromSharedPref();
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<dynamic>(
-      future: _organizationName, // a previously-obtained Future<String> or null
+      future: _userInfo, // a previously-obtained Future<String> or null
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
         String campusName = "";
         if (snapshot.hasData) {
