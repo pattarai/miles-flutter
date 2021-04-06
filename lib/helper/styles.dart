@@ -37,7 +37,7 @@ TextStyle cardHeroTextStyleWhite = new TextStyle(
   fontFamily: "Dosis",
   fontWeight: FontWeight.w400,
   color: Colors.white,
-  fontSize: 24
+  fontSize: 22
 );
 
 TextStyle cardSubHeroTextStyleWhite = new TextStyle(

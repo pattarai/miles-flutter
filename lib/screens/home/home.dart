@@ -9,7 +9,7 @@
 
 import 'package:flutter/material.dart';
 
-import 'fragments/ride.dart';
+import 'fragments/ride/ride.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
