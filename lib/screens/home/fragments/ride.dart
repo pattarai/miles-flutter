@@ -19,18 +19,114 @@ class RideNowState extends State<RideNow> {
     return FutureBuilder<dynamic>(
       future: _rideData,
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-        String campusName = "";
+        Widget campusNameText;
+        Widget availableStations;
         if (snapshot.hasData) {
           // Success
           print(snapshot.data.runtimeType);
-          campusName = snapshot.data["userData"]["organizationName"];
+          campusNameText = Container(
+            child: Text(
+              snapshot.data["userData"]["organizationName"],
+              style: subHeaderStyle,
+            ),
+          );
+          availableStations = Padding(
+            padding: const EdgeInsets.only(top: 8.0),
+            child: StaggeredGridView.countBuilder(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              crossAxisCount: 4,
+              itemCount: snapshot.data["availBikeData"].length,
+              itemBuilder: (BuildContext context, int index) => new Container(
+                  padding: EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(7.0),
+                    color: const Color(0xff32b92d),
+                    boxShadow: [
+                      BoxShadow(
+                        color: const Color(0x29000000),
+                        offset: Offset(0, 3),
+                        blurRadius: 6,
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Text(
+                        snapshot.data["availBikeData"][index]["stationName"],
+                        style: cardHeroTextStyleWhite,
+                      ),
+                      Text(
+                        snapshot.data["availBikeData"][index]["available"]
+                                .toString() +
+                            " available",
+                        style: cardSubHeroTextStyleWhite,
+                      ),
+                    ],
+                  )),
+              staggeredTileBuilder: (int index) =>
+                  new StaggeredTile.fit(2),
+              mainAxisSpacing: 4.0,
+              crossAxisSpacing: 4.0,
+            ),
+          );
         } else if (snapshot.hasError) {
           print(snapshot.error);
           // Error
-          campusName = "Error fetching information";
+          campusNameText = Container(
+              child: Text(
+            "Error fetching information",
+            style: subHeaderStyle,
+          ));
+          availableStations = Container();
         } else {
           // Loading
-          campusName = "Loading...";
+          campusNameText = Shimmer.fromColors(
+              child: Container(
+                height: 20,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(7.0),
+                  color: const Color(0xff32b92d),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0x29000000),
+                      offset: Offset(0, 3),
+                      blurRadius: 6,
+                    ),
+                  ],
+                ),                 ),
+              baseColor: Colors.black12,
+              highlightColor: Colors.white);
+          availableStations = Padding(
+            padding: const EdgeInsets.only(top: 8.0),
+            child: Shimmer.fromColors(
+              child: StaggeredGridView.countBuilder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                crossAxisCount: 4,
+                itemCount: 7,
+                itemBuilder: (BuildContext context, int index) => new Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(7.0),
+                    color: const Color(0xff32b92d),
+                    boxShadow: [
+                      BoxShadow(
+                        color: const Color(0x29000000),
+                        offset: Offset(0, 3),
+                        blurRadius: 6,
+                      ),
+                    ],
+                  ),                ),
+                staggeredTileBuilder: (int index) =>
+                    new StaggeredTile.count(2, index.isEven? 2: 1),
+                mainAxisSpacing: 4.0,
+                crossAxisSpacing: 4.0,
+              ),
+              baseColor: Colors.black12,
+              highlightColor: Colors.white,
+            ),
+          );
         }
         return SingleChildScrollView(
           child: Container(
@@ -43,36 +139,8 @@ class RideNowState extends State<RideNow> {
                   "RIDE NOW",
                   style: headerStyle,
                 ),
-                Text(
-                  campusName,
-                  style: subHeaderStyle,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
-                  child: Shimmer.fromColors(
-                    child: StaggeredGridView.countBuilder(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      crossAxisCount: 4,
-                      itemCount: 7,
-                      itemBuilder: (BuildContext context, int index) =>
-                          new Container(
-                              color: Colors.green,
-                              child: new Center(
-                                child: new CircleAvatar(
-                                  backgroundColor: Colors.white,
-                                  child: new Text('$index'),
-                                ),
-                              )),
-                      staggeredTileBuilder: (int index) =>
-                          new StaggeredTile.count(2, index.isEven ? 2 : 1),
-                      mainAxisSpacing: 4.0,
-                      crossAxisSpacing: 4.0,
-                    ),
-                    baseColor: Colors.black12,
-                    highlightColor: Colors.white,
-                  ),
-                )
+                campusNameText,
+                availableStations,
               ],
             ),
           ),

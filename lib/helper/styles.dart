@@ -31,8 +31,24 @@ TextStyle buttonStyle = new TextStyle(
 );
 
 TextStyle snackBarStyle = new TextStyle(
+    fontFamily: "Dosis", fontWeight: FontWeight.w400, fontSize: 16);
+
+TextStyle cardHeroTextStyleWhite = new TextStyle(
   fontFamily: "Dosis",
   fontWeight: FontWeight.w400,
-  fontSize: 16
+  color: Colors.white,
+  fontSize: 24
 );
 
+TextStyle cardSubHeroTextStyleWhite = new TextStyle(
+    fontFamily: "Dosis",
+    fontWeight: FontWeight.w400,
+    color: Colors.white,
+    fontSize: 16
+);
+
+TextStyle defaultTextStyleBlack = new TextStyle(
+  fontFamily: "Dosis",
+  fontWeight: FontWeight.w600,
+  color: Colors.white,
+);

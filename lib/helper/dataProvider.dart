@@ -18,8 +18,6 @@ Future<dynamic> getRideScreenData() async {
   if (response.statusCode == 200) {
     List availBikeData = jsonDecode(response.body);
 
-    print(availBikeData.runtimeType);
-
     Map<String, dynamic> allData = {
       "userData": userData,
       "availBikeData": availBikeData,
