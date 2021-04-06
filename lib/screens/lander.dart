@@ -88,6 +88,7 @@ class LanderState extends State<Lander> {
                                     return;
                                   }
                                   token = value;
+                                  print(token);
 
                                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                       content: Row(

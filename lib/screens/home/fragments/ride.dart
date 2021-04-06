@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:miles/helper/sharedPreferences.dart';
 import 'package:miles/helper/styles.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:shimmer/shimmer.dart';
 
 class RideNow extends StatefulWidget {
   @override
@@ -10,11 +12,11 @@ class RideNow extends StatefulWidget {
 }
 
 class RideNowState extends State<RideNow> {
-  final Future<dynamic> _organizationName = getFromSharedPref("organizationName");
+  final Future<dynamic> _organizationName =
+      getFromSharedPref("organizationName");
 
   @override
   Widget build(BuildContext context) {
-
     return FutureBuilder<dynamic>(
       future: _organizationName, // a previously-obtained Future<String> or null
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
@@ -26,7 +28,7 @@ class RideNowState extends State<RideNow> {
           // Error
           campusName = "Error fetching information";
         } else {
-         // Loading
+          // Loading
           campusName = "Loading...";
         }
         return SingleChildScrollView(
@@ -44,12 +46,37 @@ class RideNowState extends State<RideNow> {
                   campusName,
                   style: subHeaderStyle,
                 ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Shimmer.fromColors(
+                    child: StaggeredGridView.countBuilder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      crossAxisCount: 4,
+                      itemCount: 7,
+                      itemBuilder: (BuildContext context, int index) =>
+                          new Container(
+                              color: Colors.green,
+                              child: new Center(
+                                child: new CircleAvatar(
+                                  backgroundColor: Colors.white,
+                                  child: new Text('$index'),
+                                ),
+                              )),
+                      staggeredTileBuilder: (int index) =>
+                          new StaggeredTile.count(2, index.isEven ? 2 : 1),
+                      mainAxisSpacing: 4.0,
+                      crossAxisSpacing: 4.0,
+                    ),
+                    baseColor: Colors.black12,
+                    highlightColor: Colors.white,
+                  ),
+                )
               ],
             ),
           ),
         );
       },
     );
-
   }
 }

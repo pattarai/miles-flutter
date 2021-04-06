@@ -51,28 +51,29 @@ class _HomeScreenState extends State<HomeScreen> {
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-            backgroundColor: Colors.red,
+            icon: Icon(Icons.pedal_bike_rounded),
+            label: 'Ride',
+            backgroundColor: Color(0xffFCCB00),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.business),
-            label: 'Business',
-            backgroundColor: Colors.green,
+            icon: Icon(Icons.fitness_center_rounded),
+            label: 'Fitness+',
+            backgroundColor: Color(0xffFCCB00),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.school),
-            label: 'School',
-            backgroundColor: Colors.purple,
+            icon: Icon(Icons.account_balance_wallet_rounded),
+            label: 'Wallet',
+            backgroundColor: Color(0xffFCCB00),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Settings',
-            backgroundColor: Colors.pink,
+            icon: Icon(Icons.perm_contact_calendar_rounded),
+            label: 'My Profile',
+            backgroundColor: Color(0xffFCCB00),
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.amber[800],
+        selectedItemColor: Colors.black,
+        unselectedItemColor: Colors.black45,
         onTap: _onItemTapped,
       ),
     );
