@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:miles/global.dart';
-import 'package:miles/helper/apiHelper.dart';
 import 'package:miles/helper/dataProvider.dart';
-import 'package:miles/helper/sharedPreferences.dart';
 import 'package:miles/helper/styles.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:shimmer/shimmer.dart';
