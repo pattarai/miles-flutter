@@ -4,6 +4,7 @@ import 'package:latlng/latlng.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 import 'package:map/map.dart' as NavMap;
+import 'package:url_launcher/url_launcher.dart';
 
 class RideConfirmReserve extends StatefulWidget {
   final Map stationInfo;
@@ -30,9 +31,9 @@ class RideConfirmReserveState extends State<RideConfirmReserve> {
     );
   }
 
-
   void _gotoDefault() {
-    controller.center = LatLng(stationInfo["latitude"], stationInfo["longitude"]);
+    controller.center =
+        LatLng(stationInfo["latitude"], stationInfo["longitude"]);
   }
 
   void _onDoubleTap() {
@@ -129,15 +130,21 @@ class RideConfirmReserveState extends State<RideConfirmReserve> {
               ),
             ),
             Expanded(
-
                 flex: 7,
                 child: Container(
-                  padding: EdgeInsets.only(top:20),
+                  padding: EdgeInsets.only(top: 20),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      ElevatedButton(onPressed: null, child: Text("Open in Maps")),
+                      ElevatedButton(
+                          onPressed: () {
+                            launch("http://www.google.com/maps/place/" +
+                                stationInfo["latitude"].toString() +
+                                "," +
+                                stationInfo["longitude"].toString());
+                          },
+                          child: Text("Open in Maps")),
                       ElevatedButton(onPressed: null, child: Text("Reserve")),
                     ],
                   ),
