@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:miles/global.dart';
 import 'package:miles/helper/apiHelper.dart';
+import 'package:miles/helper/dataProvider.dart';
 import 'package:miles/helper/sharedPreferences.dart';
 import 'package:miles/helper/styles.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -13,21 +15,20 @@ class RideNow extends StatefulWidget {
 }
 
 class RideNowState extends State<RideNow> {
-  final Future<dynamic> _userInfo =
-      getAllFromSharedPref();
+  final Future<dynamic> _rideData = getRideScreenData();
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<dynamic>(
-      future: _userInfo, // a previously-obtained Future<String> or null
+      future: _rideData,
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
         String campusName = "";
         if (snapshot.hasData) {
           // Success
           print(snapshot.data.runtimeType);
-          print(snapshot.data);
-          campusName = snapshot.data["organizationName"];
+          campusName = snapshot.data["userData"]["organizationName"];
         } else if (snapshot.hasError) {
+          print(snapshot.error);
           // Error
           campusName = "Error fetching information";
         } else {
