@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:miles/helper/apiHelper.dart';
 import 'package:miles/helper/sharedPreferences.dart';
 import 'package:miles/helper/styles.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -13,7 +14,7 @@ class RideNow extends StatefulWidget {
 
 class RideNowState extends State<RideNow> {
   final Future<dynamic> _organizationName =
-      getFromSharedPref("organizationName");
+      getAllFromSharedPref();
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +24,9 @@ class RideNowState extends State<RideNow> {
         String campusName = "";
         if (snapshot.hasData) {
           // Success
-          campusName = snapshot.data;
+          print(snapshot.data.runtimeType);
+          print(snapshot.data);
+          campusName = snapshot.data["organizationName"];
         } else if (snapshot.hasError) {
           // Error
           campusName = "Error fetching information";

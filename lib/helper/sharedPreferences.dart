@@ -1,3 +1,4 @@
+import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<bool> insertToSharedPref(String key, dynamic value) async {
@@ -27,6 +28,20 @@ Future<bool> removeFromSharedPref(String key) async {
     return true;
   } catch(e) {
     return false;
+  }
+}
+
+Future<dynamic> getAllFromSharedPref() async {
+  try {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    Set keys = prefs.getKeys();
+    Map keyValue = new Map();
+    keys.forEach((key) {
+      keyValue[key] = prefs.get(key);
+    });
+    return keyValue;
+  } catch(e) {
+    return Exception("shared-pref-read-error");
   }
 }
 
