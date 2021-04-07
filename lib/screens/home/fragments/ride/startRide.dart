@@ -47,9 +47,8 @@ class StartRideState extends State<StartRide> {
                     "Start your ride within",
                     style: subHeaderStyle,
                   ),
-
                   Padding(
-                    padding: const EdgeInsets.only(top:16.0),
+                    padding: const EdgeInsets.only(top: 16.0),
                     child: CircleAvatar(
                       radius: 70,
                       child: CountdownTimer(
@@ -63,7 +62,7 @@ class StartRideState extends State<StartRide> {
                             );
                           }
                           return Text(
-                            "0${time.min}:${time.sec}",
+                            "${time.min == null ? "00" : time.min.toString().length < 2 ? "0" + time.min.toString() : time.min}:${time.sec == null ? "00" : time.sec.toString().length < 2 ? "0" + time.sec.toString() : time.sec}",
                             style: headerStyle,
                           );
                         },
@@ -79,7 +78,6 @@ class StartRideState extends State<StartRide> {
       },
     );
   }
-  cancelRide() {
 
-  }
+  cancelRide() {}
 }
