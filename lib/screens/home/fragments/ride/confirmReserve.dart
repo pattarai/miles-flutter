@@ -22,6 +22,9 @@ class RideConfirmReserve extends StatefulWidget {
 }
 
 class RideConfirmReserveState extends State<RideConfirmReserve> {
+  bool reserveLoading = false;
+  bool reserved = false;
+
   final Map stationInfo;
   final Map userInfo;
 
@@ -152,20 +155,41 @@ class RideConfirmReserveState extends State<RideConfirmReserve> {
                           },
                           child: Text("Open in Maps")),
                       ElevatedButton(
-                          onPressed: () {
-                            Map<String, String> apiData = {
-                              "email": userInfo["email"],
-                              "token": userInfo["token"],
-                              "stationID": stationInfo["stationID"].toString(),
-                            };
+                          onPressed: reserveLoading
+                              ? null
+                              : reserved
+                                  ? null
+                                  : () {
+                                      setState(() {
+                                        reserveLoading = true;
+                                      });
+                                      Map<String, String> apiData = {
+                                        "email": userInfo["email"],
+                                        "token": userInfo["token"],
+                                        "stationID":
+                                            stationInfo["stationID"].toString(),
+                                      };
 
-                            apiRequest(PROTOCOL, AUTHORITY, "reserve-bike",
-                                    apiData)
-                                .then((response) {
-                              print(response.body);
-                            });
-                          },
-                          child: Text("Reserve")),
+                                      apiRequest(PROTOCOL, AUTHORITY,
+                                              "reserve-bike", apiData)
+                                          .then((response) {
+                                        print(response.body);
+                                        setState(() {
+                                          reserved = true;
+                                          reserveLoading = false;
+                                        });
+                                      });
+                                    },
+                          child: reserveLoading
+                              ? SizedBox(
+                                  height: 20,
+                                  width: 20,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 3,
+                                  ))
+                              : reserved
+                                  ? Text("Done")
+                                  : Text("Reserve")),
                     ],
                   ),
                 ))
