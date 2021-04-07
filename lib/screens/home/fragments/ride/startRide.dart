@@ -175,17 +175,35 @@ class StartRideState extends State<StartRide> {
                                   style: buttonStyle,
                                 )),
                             Padding(
-                              padding: const EdgeInsets.only(top:8.0),
+                              padding: const EdgeInsets.only(top: 8.0),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Expanded(
                                     child: ElevatedButton(
-                                      
-                                        onPressed: null, child: Text("Cancel Ride", style: buttonStyle,)),
+                                        onPressed: cancelRide,
+                                        style: ElevatedButton.styleFrom(
+                                          primary: Color(0xffF01B46),
+                                          // background
+                                          onPrimary: Colors.white, // foreground
+                                        ),
+                                        child: Text(
+                                          "Cancel Ride",
+                                          style: buttonStyle,
+                                        )),
                                   ),
-                                      Padding(padding: EdgeInsets.only(right: 8)),
-                                      Expanded(child: ElevatedButton(onPressed: null, child: Text("Scan QR", style: buttonStyle,))),
+                                  Padding(padding: EdgeInsets.only(right: 8)),
+                                  Expanded(
+                                      child: ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                              primary: Color(0xff32B92D),
+                                              onPrimary: Colors.white),
+                                          onPressed: scanQR,
+                                          child: Text(
+                                            "Scan QR",
+                                            style: buttonStyle,
+                                          ))),
                                 ],
                               ),
                             ),
@@ -198,6 +216,10 @@ class StartRideState extends State<StartRide> {
           );
         });
   }
+
+  cancelRide() {}
+
+  scanQR() {}
 
   void showSnackBar(String desc) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
