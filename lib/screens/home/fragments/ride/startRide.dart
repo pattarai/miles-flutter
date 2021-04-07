@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_countdown_timer/current_remaining_time.dart';
 import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
@@ -114,7 +115,7 @@ class StartRideState extends State<StartRide> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Expanded(
-                    flex: 50,
+                    flex: 38,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -153,12 +154,14 @@ class StartRideState extends State<StartRide> {
                       ],
                     ),
                   ),
-                  Expanded(flex: 55, child: mapWidget),
+                  Expanded(flex: 45, child: mapWidget),
                   Expanded(
-                      flex: 17,
+                      flex: 12,
                       child: Container(
                         padding: EdgeInsets.only(top: 8),
                         child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
                             ElevatedButton(
                                 onPressed: () {
@@ -171,11 +174,20 @@ class StartRideState extends State<StartRide> {
                                   "Open in Maps",
                                   style: buttonStyle,
                                 )),
-                            Row(
-
-                              children: [
-ElevatedButton(onPressed: null, child: Text("Cancel Ride"))
-                              ],
+                            Padding(
+                              padding: const EdgeInsets.only(top:8.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                    child: ElevatedButton(
+                                      
+                                        onPressed: null, child: Text("Cancel Ride", style: buttonStyle,)),
+                                  ),
+                                      Padding(padding: EdgeInsets.only(right: 8)),
+                                      Expanded(child: ElevatedButton(onPressed: null, child: Text("Scan QR", style: buttonStyle,))),
+                                ],
+                              ),
                             ),
                           ],
                         ),
