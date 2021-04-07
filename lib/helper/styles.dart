@@ -34,18 +34,22 @@ TextStyle snackBarStyle = new TextStyle(
     fontFamily: "Dosis", fontWeight: FontWeight.w400, fontSize: 16);
 
 TextStyle cardHeroTextStyleWhite = new TextStyle(
-  fontFamily: "Dosis",
-  fontWeight: FontWeight.w400,
-  color: Colors.white,
-  fontSize: 22
-);
+    fontFamily: "Dosis",
+    fontWeight: FontWeight.w400,
+    color: Colors.white,
+    fontSize: 22);
 
 TextStyle cardSubHeroTextStyleWhite = new TextStyle(
     fontFamily: "Dosis",
     fontWeight: FontWeight.w400,
     color: Colors.white,
-    fontSize: 16
-);
+    fontSize: 16);
 
 TextStyle subHeader2Style = new TextStyle(
     fontSize: 24, fontFamily: "Dosis", fontWeight: FontWeight.w400);
+
+TextStyle timerStyle = new TextStyle(
+    color: Colors.white,
+    fontSize: 70,
+    fontFamily: "Dosis",
+    fontWeight: FontWeight.w300);

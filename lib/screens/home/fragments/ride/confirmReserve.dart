@@ -157,7 +157,7 @@ class RideConfirmReserveState extends State<RideConfirmReserve> {
                                 "," +
                                 stationInfo["longitude"].toString());
                           },
-                          child: Text("Open in Maps")),
+                          child: Text("Open in Maps", style: buttonStyle,)),
                       ElevatedButton(
                           onPressed: reserveLoading
                               ? null
@@ -216,8 +216,8 @@ class RideConfirmReserveState extends State<RideConfirmReserve> {
                                     strokeWidth: 3,
                                   ))
                               : reserved
-                                  ? Text("Done")
-                                  : Text("Reserve")),
+                                  ? Text("Done", style: buttonStyle,)
+                                  : Text("Reserve", style: buttonStyle,)),
                     ],
                   ),
                 ))
