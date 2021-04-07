@@ -50,6 +50,6 @@ TextStyle subHeader2Style = new TextStyle(
 
 TextStyle timerStyle = new TextStyle(
     color: Colors.white,
-    fontSize: 40,
+    fontSize: 60,
     fontFamily: "Dosis",
     fontWeight: FontWeight.w300);

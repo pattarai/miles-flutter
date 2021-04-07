@@ -114,7 +114,7 @@ class StartRideState extends State<StartRide> {
           }
           return Scaffold(
             body: Container(
-              padding: EdgeInsets.all(20),
+              padding: EdgeInsets.only(top: 50, left: 20, right: 20, bottom: 20),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -138,7 +138,7 @@ class StartRideState extends State<StartRide> {
                           child: CircleAvatar(
                             backgroundColor:
                                 canceled ? Color(0xffF01B46) : Colors.blue,
-                            radius: 70,
+                            radius: 100,
                             child: canceled
                                 ? Text(
                                     "--:--",
@@ -175,7 +175,7 @@ class StartRideState extends State<StartRide> {
                   ),
                   Expanded(flex: 45, child: mapWidget),
                   Expanded(
-                      flex: 12,
+                      flex: 14,
                       child: Container(
                         padding: EdgeInsets.only(top: 8),
                         child: Column(
@@ -194,7 +194,7 @@ class StartRideState extends State<StartRide> {
                                   style: buttonStyle,
                                 )),
                             Padding(
-                              padding: const EdgeInsets.only(top: 8.0),
+                              padding: const EdgeInsets.only(top: 4.0),
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,

@@ -81,13 +81,13 @@ class RideConfirmReserveState extends State<RideConfirmReserve> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        padding: EdgeInsets.all(20),
+        padding: EdgeInsets.only(top: 50, left: 20, right: 20, bottom: 20),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Expanded(
-              flex: 20,
+              flex: 13,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -150,74 +150,84 @@ class RideConfirmReserveState extends State<RideConfirmReserve> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      ElevatedButton(
-                          onPressed: () {
-                            launch("http://www.google.com/maps/place/" +
-                                stationInfo["latitude"].toString() +
-                                "," +
-                                stationInfo["longitude"].toString());
-                          },
-                          child: Text("Open in Maps", style: buttonStyle,)),
-                      ElevatedButton(
-                          onPressed: reserveLoading
-                              ? null
-                              : reserved
-                                  ? null
-                                  : () {
-                                      setState(() {
-                                        reserveLoading = true;
-                                      });
-                                      Map<String, String> apiData = {
-                                        "email": userInfo["email"],
-                                        "token": userInfo["token"],
-                                        "stationID":
-                                            stationInfo["stationID"].toString(),
-                                      };
+                      Expanded(
+                        child: ElevatedButton(
+                            onPressed: () {
+                              launch("http://www.google.com/maps/place/" +
+                                  stationInfo["latitude"].toString() +
+                                  "," +
+                                  stationInfo["longitude"].toString());
+                            },
+                            child: Text("Open in Maps", style: buttonStyle,)),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(right: 8),
+                      ),
+                      Expanded(
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              primary: Color(0xff32B92D),
+                              onPrimary: Colors.white),
+                            onPressed: reserveLoading
+                                ? null
+                                : reserved
+                                    ? null
+                                    : () {
+                                        setState(() {
+                                          reserveLoading = true;
+                                        });
+                                        Map<String, String> apiData = {
+                                          "email": userInfo["email"],
+                                          "token": userInfo["token"],
+                                          "stationID":
+                                              stationInfo["stationID"].toString(),
+                                        };
 
-                                      apiRequest(PROTOCOL, AUTHORITY,
-                                              "reserve-bike", apiData)
-                                          .then((response) {
-                                        if (response.statusCode == 200) {
-                                          var body = jsonDecode(response.body);
-                                          if (body == "no-available-bikes") {
-                                            setState(() {
-                                              reserved = false;
-                                              reserveLoading = false;
-                                            });
-                                            // Show AlertDialog
-                                            showSnackBar(
-                                                "No bikes are available at this moment");
-                                            print("No bikes");
-                                          } else {
-                                             insertToSharedPref("rideInfo", response.body.toString()).then((x) {
-                                               insertToSharedPref("stationInfo", jsonEncode(stationInfo)).then((x){
-                                                 setState(() {
-                                                   reserved = true;
-                                                   reserveLoading = false;
-                                                 });
-                                                 showSnackBar("Reserved");
-                                                 print(response.body);
-                                                 // Navigate to confirmation screen
-                                                 Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => StartRide()));
-                                               }) ;
+                                        apiRequest(PROTOCOL, AUTHORITY,
+                                                "reserve-bike", apiData)
+                                            .then((response) {
+                                          if (response.statusCode == 200) {
+                                            var body = jsonDecode(response.body);
+                                            if (body == "no-available-bikes") {
+                                              setState(() {
+                                                reserved = false;
+                                                reserveLoading = false;
+                                              });
+                                              // Show AlertDialog
+                                              showSnackBar(
+                                                  "No bikes are available at this moment");
+                                              print("No bikes");
+                                            } else {
+                                               insertToSharedPref("rideInfo", response.body.toString()).then((x) {
+                                                 insertToSharedPref("stationInfo", jsonEncode(stationInfo)).then((x){
+                                                   setState(() {
+                                                     reserved = true;
+                                                     reserveLoading = false;
+                                                   });
+                                                   showSnackBar("Reserved");
+                                                   print(response.body);
+                                                   // Navigate to confirmation screen
+                                                   Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => StartRide()));
+                                                 }) ;
 
-                                             });
+                                               });
 
+                                            }
                                           }
-                                        }
-                                        // Handle other status codes
-                                      });
-                                    },
-                          child: reserveLoading
-                              ? SizedBox(
-                                  height: 20,
-                                  width: 20,
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 3,
-                                  ))
-                              : reserved
-                                  ? Text("Done", style: buttonStyle,)
-                                  : Text("Reserve", style: buttonStyle,)),
+                                          // Handle other status codes
+                                        });
+                                      },
+                            child: reserveLoading
+                                ? SizedBox(
+                                    height: 20,
+                                    width: 20,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 3,
+                                    ))
+                                : reserved
+                                    ? Text("Done", style: buttonStyle,)
+                                    : Text("Reserve", style: buttonStyle,)),
+                      ),
                     ],
                   ),
                 ))
