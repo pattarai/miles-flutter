@@ -142,7 +142,12 @@ class StartRideState extends State<StartRide> {
                             child: canceled
                                 ? Text(
                                     "--:--",
-                                    style: headerStyle,
+                                    style: TextStyle(
+                                      height: 1,
+                                      fontSize: 40,
+                                      fontFamily: "Dosis",
+                                      fontWeight: FontWeight.w300
+                                    ),
                                   )
                                 : CountdownTimer(
                                     endTime:
@@ -153,12 +158,12 @@ class StartRideState extends State<StartRide> {
                                       if (time == null) {
                                         return Text(
                                           '00:00',
-                                          style: headerStyle,
+                                          style: timerStyle,
                                         );
                                       }
                                       return Text(
                                         "${time.min == null ? "00" : time.min.toString().length < 2 ? "0" + time.min.toString() : time.min}:${time.sec == null ? "00" : time.sec.toString().length < 2 ? "0" + time.sec.toString() : time.sec}",
-                                        style: headerStyle,
+                                        style: timerStyle,
                                       );
                                     },
                                     onEnd: cancelRide,
