@@ -57,13 +57,13 @@ class _ScanQRState extends State<ScanQR> {
                           builder: (context, snapshot) {
                             return snapshot.data == true
                                 ? Icon(
-                              Icons.flash_on,
-                              size: 40,
-                            )
+                                    Icons.flash_on,
+                                    size: 40,
+                                  )
                                 : Icon(
-                              Icons.flash_off,
-                              size: 40,
-                            );
+                                    Icons.flash_off,
+                                    size: 40,
+                                  );
                           },
                         )),
                     Padding(
@@ -93,7 +93,6 @@ class _ScanQRState extends State<ScanQR> {
             ),
           ),
           Expanded(flex: 4, child: _buildQrView(context)),
-
         ],
       ),
     );
@@ -102,7 +101,7 @@ class _ScanQRState extends State<ScanQR> {
   Widget _buildQrView(BuildContext context) {
     // For this example we check how width or tall the device is and change the scanArea and overlay accordingly.
     var scanArea = (MediaQuery.of(context).size.width < 400 ||
-        MediaQuery.of(context).size.height < 400)
+            MediaQuery.of(context).size.height < 400)
         ? 150.0
         : 300.0;
     // To ensure the Scanner view is properly sizes after rotation
@@ -128,7 +127,8 @@ class _ScanQRState extends State<ScanQR> {
         result = scanData;
       });
       // Perform verification here
-      Navigator.push(context, MaterialPageRoute(builder: (context) => Lander()));
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => Lander()));
     });
   }
 

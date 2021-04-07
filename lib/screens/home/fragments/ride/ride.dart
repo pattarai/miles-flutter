@@ -55,15 +55,14 @@ class RideNowState extends State<RideNow> {
                   physics: NeverScrollableScrollPhysics(),
                   crossAxisCount: 4,
                   itemCount: snapshot.data["availBikeData"].length,
-                  itemBuilder: (BuildContext context, int index) =>
-                      new InkWell(
+                  itemBuilder: (BuildContext context, int index) => new InkWell(
                     onTap: () {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => RideConfirmReserve(
-                                    stationInfo:
-                                        snapshot.data["availBikeData"][index],
+                                    stationInfo: snapshot.data["availBikeData"]
+                                        [index],
                                     userInfo: snapshot.data["userData"],
                                   )));
                     },
@@ -89,8 +88,7 @@ class RideNowState extends State<RideNow> {
                               style: cardHeroTextStyleWhite,
                             ),
                             Text(
-                              snapshot.data["availBikeData"][index]
-                                          ["available"]
+                              snapshot.data["availBikeData"][index]["available"]
                                       .toString() +
                                   " available",
                               style: cardSubHeroTextStyleWhite,
@@ -98,8 +96,7 @@ class RideNowState extends State<RideNow> {
                           ],
                         )),
                   ),
-                  staggeredTileBuilder: (int index) =>
-                      new StaggeredTile.fit(2),
+                  staggeredTileBuilder: (int index) => new StaggeredTile.fit(2),
                   mainAxisSpacing: 4.0,
                   crossAxisSpacing: 4.0,
                 );
@@ -115,7 +112,7 @@ class RideNowState extends State<RideNow> {
         } else {
           // Loading
           campusNameText = Padding(
-            padding: const EdgeInsets.only(top:8.0),
+            padding: const EdgeInsets.only(top: 8.0),
             child: Shimmer.fromColors(
                 child: Container(
                   height: 20,

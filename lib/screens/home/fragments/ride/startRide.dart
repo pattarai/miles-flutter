@@ -221,12 +221,15 @@ class StartRideState extends State<StartRide> {
                                           style: ElevatedButton.styleFrom(
                                               primary: Color(0xff32B92D),
                                               onPrimary: Colors.white),
-                                          onPressed: canceled ? null : () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(builder: (context) => ScanQR())
-                                            );
-                                          },
+                                          onPressed: canceled
+                                              ? null
+                                              : () {
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              ScanQR()));
+                                                },
                                           child: Text(
                                             "Scan QR",
                                             style: buttonStyle,
