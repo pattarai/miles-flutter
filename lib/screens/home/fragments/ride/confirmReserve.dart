@@ -183,6 +183,7 @@ class RideConfirmReserveState extends State<RideConfirmReserve> {
                                                   reserveLoading = false;
                                                 });
                                                 // Show AlertDialog
+                                                showSnackBar("No bikes are available at this moment");
                                                 print("No bikes");
                                               }
                                               else {
@@ -190,11 +191,13 @@ class RideConfirmReserveState extends State<RideConfirmReserve> {
                                                   reserved = true;
                                                   reserveLoading = false;
                                                 });
+                                                showSnackBar("Reserved");
                                                 print(response.body);
                                                 // Navigate to confirmation screen
                                               }
 
                                             }
+                                            // Handle other status codes
 
 
                                       });
@@ -216,5 +219,16 @@ class RideConfirmReserveState extends State<RideConfirmReserve> {
         ),
       ),
     );
+  }
+  void showSnackBar(String desc) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Row(
+          children: [
+            Text(
+              desc,
+              style: snackBarStyle,
+            ),
+          ],
+        )));
   }
 }
