@@ -24,6 +24,7 @@ class StartRideState extends State<StartRide> {
   Map rideInfo = {};
   Map stationInfo = {};
   Map userInfo = {};
+  bool canceled = false;
 
   @override
   Widget build(BuildContext context) {
@@ -125,34 +126,43 @@ class StartRideState extends State<StartRide> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         Text(
-                          "You're all set!",
+                          canceled? "Ride Canceled": "You're all set!",
                           style: headerStyle,
                         ),
                         Text(
-                          "Start your ride within",
+                          canceled? "Sorry to see you go!": "Start your ride within",
                           style: subHeaderStyle,
                         ),
                         Padding(
                           padding: const EdgeInsets.only(top: 16.0),
                           child: CircleAvatar(
+                            backgroundColor:
+                                canceled ? Color(0xffF01B46) : Colors.blue,
                             radius: 70,
-                            child: CountdownTimer(
-                              endTime: DateTime.now().millisecondsSinceEpoch +
-                                  1000 * 5 * 60,
-                              widgetBuilder: (_, CurrentRemainingTime? time) {
-                                if (time == null) {
-                                  return Text(
-                                    '00:00',
+                            child: canceled
+                                ? Text(
+                                    "--:--",
                                     style: headerStyle,
-                                  );
-                                }
-                                return Text(
-                                  "${time.min == null ? "00" : time.min.toString().length < 2 ? "0" + time.min.toString() : time.min}:${time.sec == null ? "00" : time.sec.toString().length < 2 ? "0" + time.sec.toString() : time.sec}",
-                                  style: headerStyle,
-                                );
-                              },
-                              onEnd: null,
-                            ),
+                                  )
+                                : CountdownTimer(
+                                    endTime:
+                                        DateTime.now().millisecondsSinceEpoch +
+                                            1000 * 5 * 60,
+                                    widgetBuilder:
+                                        (_, CurrentRemainingTime? time) {
+                                      if (time == null) {
+                                        return Text(
+                                          '00:00',
+                                          style: headerStyle,
+                                        );
+                                      }
+                                      return Text(
+                                        "${time.min == null ? "00" : time.min.toString().length < 2 ? "0" + time.min.toString() : time.min}:${time.sec == null ? "00" : time.sec.toString().length < 2 ? "0" + time.sec.toString() : time.sec}",
+                                        style: headerStyle,
+                                      );
+                                    },
+                                    onEnd: cancelRide,
+                                  ),
                           ),
                         ),
                       ],
@@ -186,7 +196,7 @@ class StartRideState extends State<StartRide> {
                                 children: [
                                   Expanded(
                                     child: ElevatedButton(
-                                        onPressed: cancelRide,
+                                        onPressed: canceled ? null : cancelRide,
                                         style: ElevatedButton.styleFrom(
                                           primary: Color(0xffF01B46),
                                           // background
@@ -203,7 +213,7 @@ class StartRideState extends State<StartRide> {
                                           style: ElevatedButton.styleFrom(
                                               primary: Color(0xff32B92D),
                                               onPrimary: Colors.white),
-                                          onPressed: scanQR,
+                                          onPressed: canceled ? null : scanQR,
                                           child: Text(
                                             "Scan QR",
                                             style: buttonStyle,
@@ -250,6 +260,9 @@ class StartRideState extends State<StartRide> {
     apiRequest(PROTOCOL, AUTHORITY, "cancel-ride", body).then((response) {
       print(response.statusCode);
       if (response.statusCode == 200) {
+        setState(() {
+          canceled = true;
+        });
         showSnackBar("Ride canceled");
       } else {
         showSnackBar("Failed to cancel ride");
