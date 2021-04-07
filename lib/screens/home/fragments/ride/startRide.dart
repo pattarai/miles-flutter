@@ -10,6 +10,7 @@ import 'package:latlng/latlng.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 import 'package:map/map.dart' as NavMap;
+import 'package:miles/screens/home/fragments/ride/scanQR.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class StartRide extends StatefulWidget {
@@ -220,7 +221,12 @@ class StartRideState extends State<StartRide> {
                                           style: ElevatedButton.styleFrom(
                                               primary: Color(0xff32B92D),
                                               onPrimary: Colors.white),
-                                          onPressed: canceled ? null : scanQR,
+                                          onPressed: canceled ? null : () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(builder: (context) => ScanQR())
+                                            );
+                                          },
                                           child: Text(
                                             "Scan QR",
                                             style: buttonStyle,
