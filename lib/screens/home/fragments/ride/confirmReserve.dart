@@ -9,7 +9,7 @@ import 'package:latlng/latlng.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 import 'package:map/map.dart' as NavMap;
-import 'package:miles/screens/home/fragments/ride/startRide2.dart';
+import 'package:miles/screens/home/fragments/ride/startRide.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class RideConfirmReserve extends StatefulWidget {
