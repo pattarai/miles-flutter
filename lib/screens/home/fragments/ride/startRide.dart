@@ -222,6 +222,24 @@ class StartRideState extends State<StartRide> {
   }
 
   cancelRide() {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Row(
+      children: [
+        Container(
+            padding: EdgeInsets.only(right: 16),
+            child: SizedBox(
+                height: 20,
+                width: 20,
+                child: CircularProgressIndicator(
+                  strokeWidth: 3,
+                ))),
+        Text(
+          "Canceling ride...",
+          style: snackBarStyle,
+        ),
+      ],
+    )));
+
     Map<String, String> body = {
       "email": userInfo["email"],
       "token": userInfo["token"],
@@ -231,6 +249,11 @@ class StartRideState extends State<StartRide> {
     print(body);
     apiRequest(PROTOCOL, AUTHORITY, "cancel-ride", body).then((response) {
       print(response.statusCode);
+      if (response.statusCode == 200) {
+        showSnackBar("Ride canceled");
+      } else {
+        showSnackBar("Failed to cancel ride");
+      }
     });
   }
 
