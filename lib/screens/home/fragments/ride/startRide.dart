@@ -114,7 +114,8 @@ class StartRideState extends State<StartRide> {
           }
           return Scaffold(
             body: Container(
-              padding: EdgeInsets.only(top: 50, left: 20, right: 20, bottom: 20),
+              padding:
+                  EdgeInsets.only(top: 50, left: 20, right: 20, bottom: 20),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -126,11 +127,13 @@ class StartRideState extends State<StartRide> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         Text(
-                          canceled? "Ride Canceled": "You're all set!",
+                          canceled ? "Ride Canceled" : "You're all set!",
                           style: headerStyle,
                         ),
                         Text(
-                          canceled? "Sorry to see you go!": "Start your ride within",
+                          canceled
+                              ? "Sorry to see you go!"
+                              : "Start your ride within",
                           style: subHeaderStyle,
                         ),
                         Padding(
@@ -143,11 +146,10 @@ class StartRideState extends State<StartRide> {
                                 ? Text(
                                     "--:--",
                                     style: TextStyle(
-                                      height: 1,
-                                      fontSize: 40,
-                                      fontFamily: "Dosis",
-                                      fontWeight: FontWeight.w300
-                                    ),
+                                        height: 1,
+                                        fontSize: 60,
+                                        fontFamily: "Dosis",
+                                        fontWeight: FontWeight.w300),
                                   )
                                 : CountdownTimer(
                                     endTime:

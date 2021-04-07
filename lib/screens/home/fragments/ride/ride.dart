@@ -114,23 +114,26 @@ class RideNowState extends State<RideNow> {
           availableStations = Container();
         } else {
           // Loading
-          campusNameText = Shimmer.fromColors(
-              child: Container(
-                height: 20,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(7.0),
-                  color: const Color(0xff32b92d),
-                  boxShadow: [
-                    BoxShadow(
-                      color: const Color(0x29000000),
-                      offset: Offset(0, 3),
-                      blurRadius: 6,
-                    ),
-                  ],
+          campusNameText = Padding(
+            padding: const EdgeInsets.only(top:8.0),
+            child: Shimmer.fromColors(
+                child: Container(
+                  height: 20,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(7.0),
+                    color: const Color(0xff32b92d),
+                    boxShadow: [
+                      BoxShadow(
+                        color: const Color(0x29000000),
+                        offset: Offset(0, 3),
+                        blurRadius: 6,
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              baseColor: Colors.black12,
-              highlightColor: Colors.white);
+                baseColor: Colors.black12,
+                highlightColor: Colors.white),
+          );
           availableStations = Shimmer.fromColors(
             child: StaggeredGridView.countBuilder(
               shrinkWrap: true,
