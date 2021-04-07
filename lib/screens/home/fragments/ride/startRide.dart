@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_countdown_timer/current_remaining_time.dart';
 import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
+import 'package:miles/global.dart';
+import 'package:miles/helper/apiHelper.dart';
 import 'package:miles/helper/dataProvider.dart';
 import 'package:miles/helper/styles.dart';
 import 'package:latlng/latlng.dart';
@@ -21,6 +23,7 @@ class StartRideState extends State<StartRide> {
   final Future<dynamic> _rideStationData = getRideStationData();
   Map rideInfo = {};
   Map stationInfo = {};
+  Map userInfo = {};
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +34,7 @@ class StartRideState extends State<StartRide> {
           if (snapshot.hasData) {
             // Success
             print(snapshot.data);
+            userInfo = snapshot.data["userData"];
             rideInfo = snapshot.data["rideData"];
             stationInfo = snapshot.data["stationData"];
 
@@ -217,7 +221,18 @@ class StartRideState extends State<StartRide> {
         });
   }
 
-  cancelRide() {}
+  cancelRide() {
+    Map<String, String> body = {
+      "email": userInfo["email"],
+      "token": userInfo["token"],
+      "rideID": rideInfo["currentRideID"].toString(),
+      "bikeID": rideInfo["bikeID"].toString(),
+    };
+    print(body);
+    apiRequest(PROTOCOL, AUTHORITY, "cancel-ride", body).then((response) {
+      print(response.statusCode);
+    });
+  }
 
   scanQR() {}
 

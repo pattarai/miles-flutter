@@ -29,7 +29,14 @@ Future<dynamic> getRideScreenData() async {
 }
 
 Future<dynamic> getRideStationData() async {
-  Map rideData = jsonDecode(await getFromSharedPref("rideInfo"));
-  Map stationData = jsonDecode(await getFromSharedPref("stationInfo"));
-  return {"rideData": rideData, "stationData": stationData};
+  Map userData = await getAllFromSharedPref();
+  Map rideData = jsonDecode(userData["rideInfo"]);
+  Map stationData = jsonDecode(userData["stationInfo"]);
+  userData.remove("rideInfo");
+  userData.remove("stationInfo");
+  return {
+    "userData": userData,
+    "rideData": rideData,
+    "stationData": stationData
+  };
 }
