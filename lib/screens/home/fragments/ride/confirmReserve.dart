@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:miles/global.dart';
 import 'package:miles/helper/apiHelper.dart';
@@ -173,11 +175,28 @@ class RideConfirmReserveState extends State<RideConfirmReserve> {
                                       apiRequest(PROTOCOL, AUTHORITY,
                                               "reserve-bike", apiData)
                                           .then((response) {
-                                        print(response.body);
-                                        setState(() {
-                                          reserved = true;
-                                          reserveLoading = false;
-                                        });
+                                            if (response.statusCode == 200){
+                                              var body = jsonDecode(response.body);
+                                              if (body == "no-available-bikes"){
+                                                setState(() {
+                                                  reserved = false;
+                                                  reserveLoading = false;
+                                                });
+                                                // Show AlertDialog
+                                                print("No bikes");
+                                              }
+                                              else {
+                                                setState(() {
+                                                  reserved = true;
+                                                  reserveLoading = false;
+                                                });
+                                                print(response.body);
+                                                // Navigate to confirmation screen
+                                              }
+
+                                            }
+
+
                                       });
                                     },
                           child: reserveLoading
