@@ -157,10 +157,8 @@ class StartRideState extends State<StartRide> {
                   Expanded(
                       flex: 17,
                       child: Container(
-                        padding: EdgeInsets.only(top: 60),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                        padding: EdgeInsets.only(top: 8),
+                        child: Column(
                           children: [
                             ElevatedButton(
                                 onPressed: () {
@@ -173,6 +171,12 @@ class StartRideState extends State<StartRide> {
                                   "Open in Maps",
                                   style: buttonStyle,
                                 )),
+                            Row(
+
+                              children: [
+ElevatedButton(onPressed: null, child: Text("Cancel Ride"))
+                              ],
+                            ),
                           ],
                         ),
                       ))
