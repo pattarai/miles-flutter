@@ -26,5 +26,10 @@ Future<dynamic> getRideScreenData() async {
   } else {
     throw Exception(response.statusCode.toString() + "-error");
   }
+}
 
+Future<dynamic> getRideStationData() async {
+  Map rideData = jsonDecode(await getFromSharedPref("rideInfo"));
+  Map stationData = jsonDecode(await getFromSharedPref("stationInfo"));
+  return {"rideData": rideData, "stationData": stationData};
 }

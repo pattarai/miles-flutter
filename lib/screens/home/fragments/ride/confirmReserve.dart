@@ -3,11 +3,13 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:miles/global.dart';
 import 'package:miles/helper/apiHelper.dart';
+import 'package:miles/helper/sharedPreferences.dart';
 import 'package:miles/helper/styles.dart';
 import 'package:latlng/latlng.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 import 'package:map/map.dart' as NavMap;
+import 'package:miles/screens/home/fragments/ride/startRide.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class RideConfirmReserve extends StatefulWidget {
@@ -175,31 +177,35 @@ class RideConfirmReserveState extends State<RideConfirmReserve> {
                                       apiRequest(PROTOCOL, AUTHORITY,
                                               "reserve-bike", apiData)
                                           .then((response) {
-                                            if (response.statusCode == 200){
-                                              var body = jsonDecode(response.body);
-                                              if (body == "no-available-bikes"){
-                                                setState(() {
-                                                  reserved = false;
-                                                  reserveLoading = false;
-                                                });
-                                                // Show AlertDialog
-                                                showSnackBar("No bikes are available at this moment");
-                                                print("No bikes");
-                                              }
-                                              else {
-                                                setState(() {
-                                                  reserved = true;
-                                                  reserveLoading = false;
-                                                });
-                                                showSnackBar("Reserved");
-                                                print(response.body);
-                                                // Navigate to confirmation screen
-                                              }
+                                        if (response.statusCode == 200) {
+                                          var body = jsonDecode(response.body);
+                                          if (body == "no-available-bikes") {
+                                            setState(() {
+                                              reserved = false;
+                                              reserveLoading = false;
+                                            });
+                                            // Show AlertDialog
+                                            showSnackBar(
+                                                "No bikes are available at this moment");
+                                            print("No bikes");
+                                          } else {
+                                             insertToSharedPref("rideInfo", response.body.toString()).then((x) {
+                                               insertToSharedPref("stationInfo", jsonEncode(stationInfo)).then((x){
+                                                 setState(() {
+                                                   reserved = true;
+                                                   reserveLoading = false;
+                                                 });
+                                                 showSnackBar("Reserved");
+                                                 print(response.body);
+                                                 // Navigate to confirmation screen
+                                                 Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => StartRide()));
+                                               }) ;
 
-                                            }
-                                            // Handle other status codes
+                                             });
 
-
+                                          }
+                                        }
+                                        // Handle other status codes
                                       });
                                     },
                           child: reserveLoading
@@ -220,15 +226,16 @@ class RideConfirmReserveState extends State<RideConfirmReserve> {
       ),
     );
   }
+
   void showSnackBar(String desc) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Row(
-          children: [
-            Text(
-              desc,
-              style: snackBarStyle,
-            ),
-          ],
-        )));
+      children: [
+        Text(
+          desc,
+          style: snackBarStyle,
+        ),
+      ],
+    )));
   }
 }
