@@ -118,6 +118,8 @@ class SignInState extends State<SignIn> {
                                 "password": passController.text,
                               };
 
+                              print(requestMap.toString());
+
                               apiRequest(
                                       PROTOCOL, AUTHORITY, 'login', requestMap)
                                   .catchError((error) {
@@ -169,6 +171,8 @@ class SignInState extends State<SignIn> {
                                   setState(() {
                                     isPressed = false;
                                   });
+                                  print(response.body.toString());
+                                  print(response.statusCode);
                                   ScaffoldMessenger.of(context)
                                       .showSnackBar(SnackBar(
                                           content: Row(
